@@ -271,7 +271,7 @@ function fmtGroupedSlots(slots, isNew) {
     const day = byDate.get(date).sort((a, b) => a.time.localeCompare(b.time));
     for (const s of day) {
       const when = s.endTime ? `${s.time}–${s.endTime}` : s.time;
-      const sold = s.soldOut ? ' · sold out' : '';
+      const sold = s.soldOut ? ' · SOLD OUT' : '';
       const mark = isNew && isNew(s) ? '🆕 ' : '• ';
       lines.push(`${mark}${withFlags(s.game)}`); // teams on their own line
       lines.push(`   ${when}${sold}`); // time / status on the next line
