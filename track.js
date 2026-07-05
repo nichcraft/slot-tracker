@@ -28,6 +28,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const EVENT_URL = process.env.EVENT_URL;
+const HEARTBEAT = process.env.HEARTBEAT === '1';
 const STATE_FILE = path.join(__dirname, 'state.json');
 const UA =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 ' +
@@ -272,12 +273,14 @@ async function sendTelegram(text) {
 
   const html = await fetchPage();
   if (!html) {
+    if (HEARTBEAT) await sendTelegram("⚠️ <b>Tracker heartbeat</b>\nCouldn't read the page right now — it will keep retrying on the 10-minute schedule.");
     console.error('FATAL: could not fetch the page after retries.');
     process.exit(1); // watchdog
   }
 
   const data = parseAppData(html);
   if (!data) {
+    if (HEARTBEAT) await sendTelegram("⚠️ <b>Tracker heartbeat</b>\nRead the page but couldn't parse the schedule — it may have changed. Worth a look.");
     console.error('FATAL: page fetched but schedule data missing/unparseable (queue page or site change?).');
     process.exit(1); // watchdog
   }
@@ -287,6 +290,18 @@ async function sendTelegram(text) {
     `read ${slots.length} slot(s): ` +
       slots.map((s) => `${s.date} ${s.time} ${s.game}`).join(' | ')
   );
+
+  // Heartbeat mode: confirm the live pipeline works and report what's on,
+  // then stop — no diffing, no state changes.
+  if (HEARTBEAT) {
+    const summary = slots.length ? slots.map(fmtSlot).join('\n') : '(nothing listed right now)';
+    const ok = await sendTelegram(
+      `✅ <b>Tracker heartbeat</b>\nAll good — watching ${slots.length} slot(s):\n\n${summary}`
+    );
+    if (!ok) process.exit(1);
+    console.log('heartbeat sent');
+    return;
+  }
 
   const prev = loadState();
 
