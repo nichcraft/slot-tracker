@@ -1,0 +1,14 @@
+{
+  "name": "slot-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Alerts on Telegram when a new slot is published on a configured event page.",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node track.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {}
+}
