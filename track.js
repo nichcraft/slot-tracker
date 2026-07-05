@@ -265,18 +265,20 @@ function fmtGroupedSlots(slots, isNew) {
     if (!byDate.has(s.date)) byDate.set(s.date, []);
     byDate.get(s.date).push(s);
   }
-  const out = [];
+  const groups = [];
   for (const date of [...byDate.keys()].sort()) {
-    out.push(`<b>${fmtDate(date)}</b>`);
+    const lines = [`<b>${fmtDate(date)}</b>`];
     const day = byDate.get(date).sort((a, b) => a.time.localeCompare(b.time));
     for (const s of day) {
       const when = s.endTime ? `${s.time}–${s.endTime}` : s.time;
       const sold = s.soldOut ? ' · sold out' : '';
       const mark = isNew && isNew(s) ? '🆕 ' : '• ';
-      out.push(`${mark}${withFlags(s.game)} · ${when}${sold}`);
+      lines.push(`${mark}${withFlags(s.game)}`); // teams on their own line
+      lines.push(`   ${when}${sold}`); // time / status on the next line
     }
+    groups.push(lines.join('\n'));
   }
-  return out.join('\n');
+  return groups.join('\n\n'); // blank line between dates
 }
 
 async function sendTelegram(text) {

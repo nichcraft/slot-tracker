@@ -1,0 +1,56 @@
+{
+  "updatedAt": "2026-07-05T07:24:28.101Z",
+  "count": 5,
+  "slots": {
+    "5686564": {
+      "id": "5686564",
+      "idShow": "5312079",
+      "date": "2026-07-06",
+      "time": "00:00",
+      "endTime": "02:00",
+      "game": "Brazil vs Norway",
+      "soldOut": false,
+      "firstSeen": "1970-01-01T00:00:00.000Z"
+    },
+    "5686565": {
+      "id": "5686565",
+      "idShow": "5312080",
+      "date": "2026-07-06",
+      "time": "04:00",
+      "endTime": "06:00",
+      "game": "Mexico vs. England",
+      "soldOut": false,
+      "firstSeen": "1970-01-01T00:00:00.000Z"
+    },
+    "5686566": {
+      "id": "5686566",
+      "idShow": "5312081",
+      "date": "2026-07-06",
+      "time": "23:00",
+      "endTime": "01:00",
+      "game": "Portugal vs. Spain",
+      "soldOut": false,
+      "firstSeen": "1970-01-01T00:00:00.000Z"
+    },
+    "5686567": {
+      "id": "5686567",
+      "idShow": "5312082",
+      "date": "2026-07-07",
+      "time": "04:00",
+      "endTime": "06:00",
+      "game": "USA vs. Belgium",
+      "soldOut": false,
+      "firstSeen": "1970-01-01T00:00:00.000Z"
+    },
+    "5686568": {
+      "id": "5686568",
+      "idShow": "5312083",
+      "date": "2026-07-07",
+      "time": "20:00",
+      "endTime": "22:00",
+      "game": "Argentina Vs. Egypt",
+      "soldOut": true,
+      "firstSeen": "1970-01-01T00:00:00.000Z"
+    }
+  }
+}
