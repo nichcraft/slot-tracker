@@ -212,13 +212,29 @@ function loadState() {
   }
 }
 
-function saveState(slots) {
-  const obj = {
-    updatedAt: new Date().toISOString(),
-    count: slots.length,
-    slots: Object.fromEntries(slots.map((s) => [s.id, s])),
-  };
-  fs.writeFileSync(STATE_FILE, JSON.stringify(obj, null, 2) + '\n');
+// Persists slots, stamping each with `firstSeen`. A game that already existed
+// keeps its original stamp; a genuinely new game (absent from prev) is stamped
+// now. On the first-run seed there is no prev, so everything is baselined to the
+// epoch (i.e. "old") — only games that appear AFTER we start watching count as
+// new. Legacy records without a stamp are baselined to the epoch too.
+const EPOCH = '1970-01-01T00:00:00.000Z';
+
+function saveState(slots, prev) {
+  const prevSlots = (prev && prev.slots) || {};
+  const isSeed = !prev;
+  const now = new Date().toISOString();
+  const out = {};
+  for (const s of slots) {
+    const existing = prevSlots[s.id];
+    let firstSeen;
+    if (existing) firstSeen = existing.firstSeen || EPOCH;
+    else firstSeen = isSeed ? EPOCH : now;
+    out[s.id] = { ...s, firstSeen };
+  }
+  fs.writeFileSync(
+    STATE_FILE,
+    JSON.stringify({ updatedAt: now, count: slots.length, slots: out }, null, 2) + '\n'
+  );
 }
 
 // --- notify -------------------------------------------------------------
@@ -227,10 +243,40 @@ function esc(t) {
   return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function fmtSlot(s) {
-  const when = s.endTime ? `${s.time}–${s.endTime}` : s.time;
-  const sold = s.soldOut ? ' · SOLD OUT' : '';
-  return `<b>${withFlags(s.game)}</b>\n   ${s.date} · ${when}${sold}`;
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+// "2026-07-06" -> "Mon 6 Jul" (parsed as a plain date, no timezone shift)
+function fmtDate(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!m) return iso;
+  const y = +m[1];
+  const mo = +m[2] - 1;
+  const d = +m[3];
+  const wd = new Date(Date.UTC(y, mo, d)).getUTCDay();
+  return `${WEEKDAYS[wd]} ${d} ${MONTHS[mo]}`;
+}
+
+// Group slots by date (chronological), each under a bold weekday header.
+// If isNew(s) returns true, the game is prefixed with 🆕 instead of a bullet.
+function fmtGroupedSlots(slots, isNew) {
+  const byDate = new Map();
+  for (const s of slots) {
+    if (!byDate.has(s.date)) byDate.set(s.date, []);
+    byDate.get(s.date).push(s);
+  }
+  const out = [];
+  for (const date of [...byDate.keys()].sort()) {
+    out.push(`<b>${fmtDate(date)}</b>`);
+    const day = byDate.get(date).sort((a, b) => a.time.localeCompare(b.time));
+    for (const s of day) {
+      const when = s.endTime ? `${s.time}–${s.endTime}` : s.time;
+      const sold = s.soldOut ? ' · sold out' : '';
+      const mark = isNew && isNew(s) ? '🆕 ' : '• ';
+      out.push(`${mark}${withFlags(s.game)} · ${when}${sold}`);
+    }
+  }
+  return out.join('\n');
 }
 
 async function sendTelegram(text) {
@@ -291,27 +337,39 @@ async function sendTelegram(text) {
       slots.map((s) => `${s.date} ${s.time} ${s.game}`).join(' | ')
   );
 
+  const prev = loadState();
+  const bookingLink = `\n\n🎟 <a href="${EVENT_URL}">Open booking page</a>`;
+  const plural = (n) => (n === 1 ? '' : 's');
+
   // Heartbeat mode: confirm the live pipeline works and report what's on,
-  // then stop — no diffing, no state changes.
+  // flagging games added in the last day. No diffing, no state changes.
   if (HEARTBEAT) {
-    const summary = slots.length ? slots.map(fmtSlot).join('\n') : '(nothing listed right now)';
+    const seen = (prev && prev.slots) || {};
+    const now = Date.now();
+    const isNew = (s) => {
+      const rec = seen[s.id];
+      if (!rec) return true; // live but not yet recorded -> new
+      if (!rec.firstSeen) return false; // legacy record, no stamp -> treat as old
+      return now - Date.parse(rec.firstSeen) < 24 * 3600 * 1000;
+    };
+    const newCount = slots.filter(isNew).length;
+    const list = slots.length ? fmtGroupedSlots(slots, isNew) : '(nothing listed right now)';
     const ok = await sendTelegram(
-      `✅ <b>Tracker heartbeat</b>\nAll good — watching ${slots.length} slot(s):\n\n${summary}`
+      `☀️ <b>Morning check</b> · watching ${slots.length} game${plural(slots.length)}` +
+        `${newCount ? ` (${newCount} new)` : ''}\n\n${list}${bookingLink}`
     );
     if (!ok) process.exit(1);
     console.log('heartbeat sent');
     return;
   }
 
-  const prev = loadState();
-
-  // First run: seed silently and send a one-time "is live" summary.
+  // First run: seed silently (baseline) and send a one-time "is live" summary.
   if (!prev) {
-    saveState(slots);
-    const summary = slots.length ? slots.map(fmtSlot).join('\n') : '(nothing listed right now)';
+    saveState(slots, null);
+    const list = slots.length ? fmtGroupedSlots(slots) : '(nothing listed right now)';
     await sendTelegram(
       `🎬 <b>Tracker is live</b>\n` +
-        `Watching ${slots.length} slot(s). I'll ping you when a new one is published.\n\n${summary}`
+        `Watching ${slots.length} game${plural(slots.length)}. I'll ping you when a new one is published.\n\n${list}`
     );
     console.log('seeded initial state.json');
     return;
@@ -325,19 +383,17 @@ async function sendTelegram(text) {
     return; // no state write -> no commit
   }
 
-  newSlots.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
-  const header = `🚨 <b>${newSlots.length} new slot${newSlots.length > 1 ? 's' : ''} just published!</b>`;
-  const body = newSlots.map(fmtSlot).join('\n');
-  const link = `\n\n🎟️ <a href="${EVENT_URL}">Open booking page</a>`;
+  const header = `🆕 <b>${newSlots.length} new game${plural(newSlots.length)} published</b>`;
+  const body = fmtGroupedSlots(newSlots);
 
-  const ok = await sendTelegram(`${header}\n\n${body}${link}`);
+  const ok = await sendTelegram(`${header}\n\n${body}${bookingLink}`);
   if (!ok) {
     console.error('FATAL: Telegram send failed; leaving state unchanged so it retries next run.');
     process.exit(1); // watchdog + don't persist so we re-alert next run
   }
 
-  saveState(slots);
-  console.log(`alerted ${newSlots.length} new slot(s) and updated state.json`);
+  saveState(slots, prev);
+  console.log(`alerted ${newSlots.length} new game(s) and updated state.json`);
 })().catch((e) => {
   console.error('unexpected error ->', e && e.stack ? e.stack : e);
   process.exit(1);
