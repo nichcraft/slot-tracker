@@ -1,27 +1,7 @@
 {
-  "updatedAt": "2026-07-05T16:01:24.884Z",
-  "count": 6,
+  "updatedAt": "2026-07-06T08:51:07.030Z",
+  "count": 5,
   "slots": {
-    "5686564": {
-      "id": "5686564",
-      "idShow": "5312079",
-      "date": "2026-07-06",
-      "time": "00:00",
-      "endTime": "02:00",
-      "game": "Brazil vs Norway",
-      "soldOut": false,
-      "firstSeen": "1970-01-01T00:00:00.000Z"
-    },
-    "5686565": {
-      "id": "5686565",
-      "idShow": "5312080",
-      "date": "2026-07-06",
-      "time": "04:00",
-      "endTime": "06:00",
-      "game": "Mexico vs. England",
-      "soldOut": false,
-      "firstSeen": "1970-01-01T00:00:00.000Z"
-    },
     "5686566": {
       "id": "5686566",
       "idShow": "5312081",
@@ -49,8 +29,18 @@
       "time": "20:00",
       "endTime": "22:00",
       "game": "Argentina Vs. Egypt",
-      "soldOut": false,
+      "soldOut": true,
       "firstSeen": "1970-01-01T00:00:00.000Z"
+    },
+    "5686569": {
+      "id": "5686569",
+      "idShow": "5312084",
+      "date": "2026-07-08",
+      "time": "00:00",
+      "endTime": "02:00",
+      "game": "Switzerland vs. Columbia",
+      "soldOut": false,
+      "firstSeen": "2026-07-06T08:51:07.030Z"
     },
     "5686570": {
       "id": "5686570",
@@ -59,7 +49,7 @@
       "time": "00:00",
       "endTime": "02:00",
       "game": "France Vs. Morocco",
-      "soldOut": false,
+      "soldOut": true,
       "firstSeen": "2026-07-05T16:01:24.884Z"
     }
   }
