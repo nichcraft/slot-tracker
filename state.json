@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-07-06T08:51:07.030Z",
-  "count": 5,
+  "updatedAt": "2026-07-06T10:51:09.065Z",
+  "count": 6,
   "slots": {
     "5686566": {
       "id": "5686566",
@@ -49,8 +49,18 @@
       "time": "00:00",
       "endTime": "02:00",
       "game": "France Vs. Morocco",
-      "soldOut": true,
+      "soldOut": false,
       "firstSeen": "2026-07-05T16:01:24.884Z"
+    },
+    "5686572": {
+      "id": "5686572",
+      "idShow": "5312087",
+      "date": "2026-07-12",
+      "time": "01:00",
+      "endTime": "03:00",
+      "game": "Norway vs. England",
+      "soldOut": false,
+      "firstSeen": "2026-07-06T10:51:09.065Z"
     }
   }
 }
