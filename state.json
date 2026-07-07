@@ -1,27 +1,7 @@
 {
-  "updatedAt": "2026-07-06T10:51:09.065Z",
-  "count": 6,
+  "updatedAt": "2026-07-07T12:25:38.276Z",
+  "count": 5,
   "slots": {
-    "5686566": {
-      "id": "5686566",
-      "idShow": "5312081",
-      "date": "2026-07-06",
-      "time": "23:00",
-      "endTime": "01:00",
-      "game": "Portugal vs. Spain",
-      "soldOut": false,
-      "firstSeen": "1970-01-01T00:00:00.000Z"
-    },
-    "5686567": {
-      "id": "5686567",
-      "idShow": "5312082",
-      "date": "2026-07-07",
-      "time": "04:00",
-      "endTime": "06:00",
-      "game": "USA vs. Belgium",
-      "soldOut": false,
-      "firstSeen": "1970-01-01T00:00:00.000Z"
-    },
     "5686568": {
       "id": "5686568",
       "idShow": "5312083",
@@ -49,8 +29,18 @@
       "time": "00:00",
       "endTime": "02:00",
       "game": "France Vs. Morocco",
-      "soldOut": false,
+      "soldOut": true,
       "firstSeen": "2026-07-05T16:01:24.884Z"
+    },
+    "5686571": {
+      "id": "5686571",
+      "idShow": "5312086",
+      "date": "2026-07-10",
+      "time": "23:00",
+      "endTime": "01:00",
+      "game": "Spain vs Belgium",
+      "soldOut": false,
+      "firstSeen": "2026-07-07T12:25:38.276Z"
     },
     "5686572": {
       "id": "5686572",
