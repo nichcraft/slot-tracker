@@ -1,13 +1,12 @@
 name: heartbeat
 
-# Daily "still watching" confirmation to Telegram.
-# 05:00 UTC = 09:00 Asia/Dubai (Dubai is UTC+4, no DST).
-# GitHub cron is best-effort, so it may fire a little late.
+# Daily "still watching" confirmation to Telegram, at 09:00 Asia/Dubai.
+# Triggered externally by cron-job.org (Job B) via the workflow_dispatch API.
+# GitHub's native `schedule:` cron was removed 2026-07-08 — it fired hours late,
+# causing a duplicate, mistimed heartbeat.
 
 on:
-  schedule:
-    - cron: "0 5 * * *"
-  workflow_dispatch: {} # fire it on demand from the Actions tab
+  workflow_dispatch: {} # also runnable on demand from the Actions tab
 
 permissions:
   contents: read

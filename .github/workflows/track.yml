@@ -1,10 +1,9 @@
 name: slot tracker
 
 on:
-  schedule:
-    # Every 10 minutes, offset off the top of the hour to dodge cron congestion.
-    - cron: "2,12,22,32,42,52 * * * *"
-  workflow_dispatch: {} # lets you run it on demand from the Actions tab
+  # Triggered externally every 5 min by cron-job.org via the workflow_dispatch API.
+  # GitHub's native `schedule:` cron was removed 2026-07-08 — it fired unreliably/late.
+  workflow_dispatch: {} # also runnable on demand from the Actions tab
 
 # Needed so the job can commit the updated state.json back to the repo.
 permissions:
