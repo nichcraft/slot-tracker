@@ -1,27 +1,7 @@
 {
-  "updatedAt": "2026-07-07T12:25:38.276Z",
-  "count": 5,
+  "updatedAt": "2026-07-08T12:55:37.475Z",
+  "count": 4,
   "slots": {
-    "5686568": {
-      "id": "5686568",
-      "idShow": "5312083",
-      "date": "2026-07-07",
-      "time": "20:00",
-      "endTime": "22:00",
-      "game": "Argentina Vs. Egypt",
-      "soldOut": true,
-      "firstSeen": "1970-01-01T00:00:00.000Z"
-    },
-    "5686569": {
-      "id": "5686569",
-      "idShow": "5312084",
-      "date": "2026-07-08",
-      "time": "00:00",
-      "endTime": "02:00",
-      "game": "Switzerland vs. Columbia",
-      "soldOut": false,
-      "firstSeen": "2026-07-06T08:51:07.030Z"
-    },
     "5686570": {
       "id": "5686570",
       "idShow": "5312085",
@@ -51,6 +31,16 @@
       "game": "Norway vs. England",
       "soldOut": false,
       "firstSeen": "2026-07-06T10:51:09.065Z"
+    },
+    "5686573": {
+      "id": "5686573",
+      "idShow": "5312088",
+      "date": "2026-07-12",
+      "time": "05:00",
+      "endTime": "07:00",
+      "game": "Argentina vs Switzerland",
+      "soldOut": false,
+      "firstSeen": "2026-07-08T12:55:37.475Z"
     }
   }
 }
