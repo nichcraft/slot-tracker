@@ -1,17 +1,7 @@
 {
-  "updatedAt": "2026-07-08T12:55:37.475Z",
-  "count": 4,
+  "updatedAt": "2026-07-10T11:41:08.572Z",
+  "count": 6,
   "slots": {
-    "5686570": {
-      "id": "5686570",
-      "idShow": "5312085",
-      "date": "2026-07-10",
-      "time": "00:00",
-      "endTime": "02:00",
-      "game": "France Vs. Morocco",
-      "soldOut": true,
-      "firstSeen": "2026-07-05T16:01:24.884Z"
-    },
     "5686571": {
       "id": "5686571",
       "idShow": "5312086",
@@ -41,6 +31,36 @@
       "game": "Argentina vs Switzerland",
       "soldOut": false,
       "firstSeen": "2026-07-08T12:55:37.475Z"
+    },
+    "5686574": {
+      "id": "5686574",
+      "idShow": "5312089",
+      "date": "2026-07-14",
+      "time": "23:00",
+      "endTime": "01:00",
+      "game": "W97 vs W98",
+      "soldOut": false,
+      "firstSeen": "2026-07-10T11:41:08.572Z"
+    },
+    "5686575": {
+      "id": "5686575",
+      "idShow": "5312090",
+      "date": "2026-07-15",
+      "time": "23:00",
+      "endTime": "01:00",
+      "game": "W99 vs W100",
+      "soldOut": false,
+      "firstSeen": "2026-07-10T11:41:08.572Z"
+    },
+    "5686576": {
+      "id": "5686576",
+      "idShow": "5312091",
+      "date": "2026-07-19",
+      "time": "01:00",
+      "endTime": "03:00",
+      "game": "RU101 vs RU102",
+      "soldOut": false,
+      "firstSeen": "2026-07-10T11:41:08.572Z"
     }
   }
 }
