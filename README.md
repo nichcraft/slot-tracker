@@ -1,5 +1,10 @@
 # Slot tracker
 
+> **Retired 2026-07-20.** All three workflows are disabled and the repo is
+> archived (read-only). The external cron-job.org jobs that dispatched them are
+> switched off, so nothing runs any more. Kept for reference. To revive: unarchive,
+> re-enable the workflows, check the secrets, and re-enable the cron-job.org jobs.
+
 Pings me on Telegram when a new slot is published on the event page I'm
 watching. Runs free on GitHub Actions, checks every 10 minutes. No browser.
 
